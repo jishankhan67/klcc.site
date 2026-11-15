@@ -1,0 +1,188 @@
+@extends($activeTemplate . 'layouts.frontend')
+@section('content')
+    <div class="container pt-5 pb-3 mt-4 mb-2 bg--primary rounded">
+        <div class="row">
+            <div class="col-7 pt-1 ps-2">
+                <h2 class="text-light"> Membership Plan</h2>
+                <h6 class="text-light">Join with us.</h6>
+            </div>
+            <div class="col-5" align="center"><img src="/assets/templates/smartlab/images/vip-2.png" width="100px"></div>
+        </div>
+    </div>
+<div id="appCapsule">
+    <div class="section-sm pricing-section">
+        <div class="container-xl">
+            <div class="row g-3 justify-content-center">
+                @foreach ($plans as $plan)
+                    <div class="col-sm-6 col-lg-4">
+                    <!-- card block -->
+                        <div class="card-block bg--primary mt-2">
+                            <div class="card-main">
+                            
+                                <div class="card-button dropdown mt-2 me-1">
+                                    @if (@auth()->user()->runningPlan && @auth()->user()->plan_id == $plan->id)
+                                        <button class="btn btn-link btn-icon disabled">@lang('Current Package')</button>
+                                    @else
+                                        <button class="btn btn-link btn btn-light buyBtn" data-plan="{{ $plan }}">
+                                            @lang('Buy')
+                                        </button>
+                                    @endif
+                                </div>
+                                <div class="balance">
+                                    <span class="label">Plan Name</span>
+                                    <h1 class="title">{{ __($plan->name) }} 
+                                    @if ($plan->highlight == 1)
+                                        <span class="fontsize-caption px-1 rounded bg-success">@lang('Popular')</span>
+                                    @endif
+                                    </h1>
+                                </div>
+                                <div class="in">
+                                    <div class="card-number">
+                                        <span class="label">Price</span>
+                                        {{ __(showAmount($plan->price)) }} {{ $general->cur_text }}
+                                    </div>
+                                    <div class="bottom">
+                                        <div class="card-expiry"><span class="label">@lang('Validity')</span> {{ $plan->validity }} @lang('Days')</div>
+                                        <div class="card-expiry"><span class="label">@lang('Referral Bonus')</span>Upto @lang('Upto') {{ $plan->ref_level }} @lang('Level')</div>
+                                        <div class="card-ccv"><span class="label">@lang('Daily Limit')</span> {{ $plan->daily_limit }} @lang('PTC')</div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <!-- end card block -->
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="modal custom--modal fade" id="BuyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <form method="post" action="{{ route('user.buyPlan') }}">
+                        @csrf
+                        <input type="hidden" name="id">
+                        <div class="modal-header">
+                            <strong class="modal-title"> @lang('Confirmation to purches  ')<span class="planName"></span></strong>
+
+                            <button type="button" class="close btn btn-sm btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            @auth
+                                <div class="form-group">
+                                    @if (auth()->user()->runningPlan)
+                                        <code class="d-block">@lang('If you subscribe to this one. Your old limitation will reset according to this package.')</code>
+                                    @endif
+
+                                    <h6 class="text-center dailyLimit"></h6>
+                                    <p class="text-center refLevel"></p>
+                                    <p class="text-center mt-1 validity"></p>
+
+                                    <label>@lang('Select Wallet')</label>
+                                    <select class="form-control  form-select" name="wallet_type" required>
+                                        <option value="">@lang('Select One')</option>
+                                        @if (auth()->user()->balance > 0)
+                                            <option value="deposit_wallet">@lang('Deposit Wallet - ' . $general->cur_sym . showAmount(auth()->user()->balance))</option>
+                                        @endif
+
+                                        @foreach ($gatewayCurrency as $data)
+                                            <option value="{{ $data->id }}" @selected(old('wallet_type') == $data->method_code) data-gateway="{{ $data }}">{{ $data->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <code class="gateway-info rate-info d-none">@lang('Rate'): 1 {{ $general->cur_text }}
+                                        = <span class="rate"></span> <span class="method_currency"></span></code>
+                                </div>
+                                <div class="form-group">
+                                    <label>@lang('Invest Amount')</label>
+                                    <div class="input-group">
+                                        <input type="number" step="any" class="form-control form-control" name="amount" required>
+                                        <span class="input-group-text text-white bg--primary px-1">{{ $general->cur_text }}</span>
+                                    </div>
+                                    <code class="gateway-info d-none">@lang('Charge'): <span class="charge"></span>
+                                        {{ $general->cur_text }}. @lang('Total amount'): <span class="total"></span>
+                                        {{ $general->cur_text }}</code>
+                                </div>
+                            @else
+                                <p>@lang('Please login to subscribe plan')</p>
+                            @endauth
+                        </div>
+                        <div class="modal-footer">
+                            @auth
+                                <button type="button" class="btn btn-dark text-white" data-bs-dismiss="modal">@lang('No')</button>
+                                <button type="submit" class="btn btn--base text-white ">@lang('Yes')</button>
+                            @else
+                                <a href="{{ route('user.login') }}" class="btn btn--base text-white w-100">@lang('Login')</a>
+                            @endauth
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="my-5 py-5">&nbsp;<div>
+@endsection
+@push('style')
+    <style>
+        .package-disabled {
+            opacity: 0.5;
+        }
+    </style>
+@endpush
+@push('script')
+    <script type="text/javascript">
+        (function($) {
+            "use strict";
+            $('.buyBtn').click(function() {
+                let symbol = '{{ $general->cur_sym }}';
+                let currency = '{{ $general->cur_text }}';
+                $('.gateway-info').addClass('d-none');
+                let modal = $('#BuyModal');
+                let plan = $(this).data('plan')
+                modal.find('.planName').text(plan.name)
+                modal.find('[name=id]').val(plan.id)
+                let planPrice = parseFloat(plan.price).toFixed(2);
+                modal.find('[name=amount]').val(planPrice);
+                modal.find('[name=amount]').attr('readonly', true);
+
+                modal.find('.dailyLimit').html(`Daily Ads Limit:<span class="text-danger"> ${plan.daily_limit}</span>`)
+                modal.find('.refLevel').html(`Referral Level: <span class="text-danger">${plan.ref_level} </span>`)
+                modal.find('.validity').html(`Plan Validity:  <span class="text-danger"> ${plan.validity} Days </span>`)
+
+                $('[name=amount]').on('input', function() {
+                    $('[name=wallet_type]').trigger('change');
+                })
+
+                $('[name=wallet_type]').change(function() {
+                    var amount = $('[name=amount]').val();
+                    if ($(this).val() != 'deposit_wallet' && $(this).val() != 'interest_wallet' && amount) {
+                        var resource = $('select[name=wallet_type] option:selected').data('gateway');
+                        var fixed_charge = parseFloat(resource.fixed_charge);
+                        var percent_charge = parseFloat(resource.percent_charge);
+                        var charge = parseFloat(fixed_charge + (amount * percent_charge / 100)).toFixed(2);
+                        $('.charge').text(charge);
+                        $('.rate').text(parseFloat(resource.rate));
+                        $('.gateway-info').removeClass('d-none');
+                        if (resource.currency == '{{ $general->cur_text }}') {
+                            $('.rate-info').addClass('d-none');
+                        } else {
+                            $('.rate-info').removeClass('d-none');
+                        }
+                        $('.method_currency').text(resource.currency);
+                        $('.total').text(parseFloat(charge) + parseFloat(amount));
+                    } else {
+                        $('.gateway-info').addClass('d-none');
+                    }
+                });
+                modal.find('input[name=id]').val(plan.id);
+                modal.modal('show');
+            });
+        })(jQuery);
+    </script>
+@endpush

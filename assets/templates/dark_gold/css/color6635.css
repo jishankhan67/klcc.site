@@ -1,0 +1,168 @@
+
+.price .single-price .part-top {
+    background: #144bfd;
+}
+
+.ptc-card {
+    border: 1px solid #144bfd80;
+    background: linear-gradient(to bottom, #144bfd40, #fff) !important;
+}
+
+.price .single-price .part-top {
+    padding: 26px 30px 30px;
+    background: #144bfd;
+}
+
+.price .single-price .part-bottom ul li {
+    font-size: 16px;
+    padding: 12px 0;
+}
+
+.price .single-price .part-bottom button:hover {
+    background: transparent;
+    color: #144bfd;
+}
+
+.header .main-menu li a:hover, .header .main-menu li a:focus {
+    color: #144bfd;
+}
+
+.btn--base,.cmn-btn {
+    background-color: #144bfd;
+}
+
+.btn--base:hover, .cmn-btn:hover {
+    color: #ffffff;
+    background-color: #2951a3;
+}
+
+.btn--base:active, .cmn-btn:active {
+    color: #ffffff;
+    background-color: #144bfd !important;
+}
+
+.btn--base:focus, .cmn-btn:focus {
+    color: #ffffff;
+    background-color: #144bfd !important;
+}
+
+.text--base{
+    color: #144bfd;
+}
+
+.style--three:hover{
+    background-color: #144bfd;
+}
+
+.hero__slider .slick-arrow::before {
+    background-color: #144bfd;
+}
+
+.video-thumb .video-icon {
+    position: absolute;
+    background-color: #144bfd;
+}
+.scroll-to-top {
+    background-color: #144bfd;
+}
+
+.feature-card__icon {
+    color: #144bfd;
+}
+
+.feature-card:hover {
+    background-color: #144bfd;
+}
+
+.price .single-price .part-bottom button {
+    background: #144bfd;
+    border: 2px solid #144bfd;
+}
+.header.menu-fixed .header__bottom {
+    background-color: #2951a3;
+}
+.bg--base {
+    background-color: #144bfd;
+}
+.slick-dots li.slick-active button {
+    background-color: #144bfd;
+}
+.blog-details__footer .social__links li a:hover {
+    background-color: #144bfd;
+}
+.blog-details__thumb .post__date .date {
+    background-color: #144bfd;
+}
+
+.sidebar .widget .widget__title::after {
+    background-color: #144bfd;
+}
+
+.btn-success:not(:disabled):not(.disabled).active, .btn-success:not(:disabled):not(.disabled):active, .show>.btn-success.dropdown-toggle {
+    background-color: #144bfd;
+    border-color: #144bfd;
+}
+
+a {
+    color: #144bfd;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.d-pagination .pagination li.active a {
+    background-color: #144bfd;
+    color: #ffffff;
+}
+.page-item.active .page-link {
+    background-color: #144bfd;
+    border-color: #144bfd;
+}
+
+.d-pagination .pagination li a:hover {
+    color: #144bfd;
+    border-color: #144bfd;
+}
+.preloader {
+    background-color: #144bfd;
+}
+
+.header .main-menu li .sub-menu {
+    background-color: #144bfd;
+    border-top: 2px solid #144bfd;
+}
+
+.form-control:focus, .form--select:focus {
+    border-color: #144bfd4a;
+}
+
+.footer-section {
+    background-color: #2951a3;
+}
+
+.bg--primary {
+    background-color: #144bfd!important;
+}
+.bg--classic {
+    background-color: #2951a3!important;
+}
+.bg--success {
+    background-color: #144bfd!important;
+}
+
+.bb--3 {
+    border-color: #144bfd!important;
+}
+.table .thead-dark th {
+    background-color: #144bfd;
+    border:none;
+}
+.bg-primary {
+    background-color: #144bfd!important;
+    color:#fff;
+}
+.b-primary{
+    border: 1px solid #144bfd7a !important;
+}
+
+.pricing--popular{
+    border: 2px solid #144bfd}
