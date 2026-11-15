@@ -1,1 +1,21 @@
 
+{
+  "version": 2,
+  "receives": [".php"],
+  "builds": [
+    {
+      "src": "*.php",
+      "use": "vercel-php@0.6.0"
+    },
+    {
+      "src": "core/**",
+      "use": "vercel-php@0.6.0"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "destination": "/index.php"
+    }
+  ]
+}
